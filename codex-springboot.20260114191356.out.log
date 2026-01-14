@@ -1,0 +1,70 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-14T19:14:02.179+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] c.C.C.CvExtIsetKeyrusApplication         : Starting CvExtIsetKeyrusApplication using Java 17.0.16 with PID 20980 (C:\Iset Rades\L2 DSI\ISETxKeyrusxStage\Backend\CvExtIsetKeyrus\target\classes started by user in C:\Iset Rades\L2 DSI\ISETxKeyrusxStage\Backend\CvExtIsetKeyrus)
+2026-01-14T19:14:02.184+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] c.C.C.CvExtIsetKeyrusApplication         : No active profile set, falling back to 1 default profile: "default"
+2026-01-14T19:14:02.991+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-14T19:14:03.075+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 74 ms. Found 6 JPA repository interfaces.
+2026-01-14T19:14:03.728+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 4000 (http)
+2026-01-14T19:14:03.743+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-14T19:14:03.744+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-14T19:14:03.824+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1592 ms
+Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
+2026-01-14T19:14:04.048+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-14T19:14:04.053+01:00  WARN 20980 --- [CvExtIsetKeyrus] [           main] c.zaxxer.hikari.util.DriverDataSource    : Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2026-01-14T19:14:04.365+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4fea840f
+2026-01-14T19:14:04.371+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-14T19:14:04.428+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-14T19:14:04.566+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-14T19:14:05.260+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-14T19:14:05.448+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/cv_database]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.4.3
+	Default catalog/schema: cv_database/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-14T19:14:07.123+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-14T19:14:07.143+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-14T19:14:07.252+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-14T19:14:07.688+01:00  WARN 20980 --- [CvExtIsetKeyrus] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-14T19:14:08.573+01:00  WARN 20980 --- [CvExtIsetKeyrus] [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-01-14T19:14:08.576+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-14T19:14:08.579+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-01-14T19:14:08.592+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-01-14T19:14:08.606+01:00  INFO 20980 --- [CvExtIsetKeyrus] [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-14T19:14:08.637+01:00 ERROR 20980 --- [CvExtIsetKeyrus] [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 4000 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 4000 or configure this application to listen on another port.
+
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:4.0.1:run (default-cli) on project CvExtIsetKeyrus: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,6 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
   @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
@@ -65,10 +67,15 @@ public class SecurityConfig {
       .csrf(csrf -> csrf.disable())
       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth -> auth
+        // Admin endpoints - protégés par ADMIN (vérification via @PreAuthorize aussi)
+        .requestMatchers("/admin/**").hasRole("ADMIN")
+        
+        // CV Resources
         .requestMatchers(HttpMethod.GET, cvResources).hasAnyRole("ADMIN", "CV_READ")
         .requestMatchers(HttpMethod.POST, cvResources).hasAnyRole("ADMIN", "CV_CREATE")
         .requestMatchers(HttpMethod.PUT, cvResources).hasAnyRole("ADMIN", "CV_UPDATE")
         .requestMatchers(HttpMethod.DELETE, cvResources).hasAnyRole("ADMIN", "CV_DELETE")
+        
         .anyRequest().authenticated()
       )
       .oauth2ResourceServer(oauth2 -> oauth2

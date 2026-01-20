@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 public class LangueService {
 
-    private LangueRepository langueRepository;
+    private final LangueRepository langueRepository;
 
     public LangueService(LangueRepository langueRepository) {
         this.langueRepository = langueRepository;
@@ -34,7 +34,7 @@ public class LangueService {
 
     // READ - Récupérer toutes les langues d'un CV
     public List<Langue> rechercherParCV(Integer idCv) {
-        return this.langueRepository.findByCvIdCv(idCv);
+        return this.langueRepository.findByIdCv(idCv);
     }
 
     // UPDATE - Mettre à jour une langue

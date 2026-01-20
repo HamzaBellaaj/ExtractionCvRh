@@ -23,20 +23,19 @@ public class Analyse {
     @Column(name = "score_soft_skills")
     private Double scoreSoftSkills;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cv", nullable = false)
-    private CV cv;
+    @Column(name = "id_cv")
+    private Integer idCv;
 
     // Constructeurs
     public Analyse() {
     }
 
-    public Analyse(String motsClesPrincipaux, Double scoreGlobal, Double scoreTechnique, Double scoreSoftSkills, CV cv) {
+    public Analyse(String motsClesPrincipaux, Double scoreGlobal, Double scoreTechnique, Double scoreSoftSkills, Integer idCv) {
         this.motsClesPrincipaux = motsClesPrincipaux;
         this.scoreGlobal = scoreGlobal;
         this.scoreTechnique = scoreTechnique;
         this.scoreSoftSkills = scoreSoftSkills;
-        this.cv = cv;
+        this.idCv = idCv;
     }
 
     // Getters et Setters
@@ -80,11 +79,11 @@ public class Analyse {
         this.scoreSoftSkills = scoreSoftSkills;
     }
 
-    public CV getCv() {
-        return cv;
+    public Integer getIdCv() {
+        return idCv;
     }
 
-    public void setCv(CV cv) {
-        this.cv = cv;
+    public void setIdCv(Integer idCv) {
+        this.idCv = idCv;
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/langue")
 public class LangueController {
 
-    private LangueService langueService;
+    private final LangueService langueService;
 
     public LangueController(LangueService langueService) {
         this.langueService = langueService;

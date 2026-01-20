@@ -1,16 +1,17 @@
 package com.CvExt.CvExtIsetKeyrus.Service;
 
-import com.CvExt.CvExtIsetKeyrus.Repository.FormationRepository;
-import com.CvExt.CvExtIsetKeyrus.entities.Formation;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.CvExt.CvExtIsetKeyrus.Repository.FormationRepository;
+import com.CvExt.CvExtIsetKeyrus.entities.Formation;
 
 @Service
 public class FormationService {
 
-    private FormationRepository formationRepository;
+    private final FormationRepository formationRepository;
 
     public FormationService(FormationRepository formationRepository) {
         this.formationRepository = formationRepository;
@@ -34,7 +35,7 @@ public class FormationService {
 
     // READ - Récupérer toutes les formations d'un CV
     public List<Formation> rechercherParCV(Integer idCv) {
-        return this.formationRepository.findByCvIdCv(idCv);
+        return this.formationRepository.findByIdCv(idCv);
     }
 
     // UPDATE - Mettre à jour une formation

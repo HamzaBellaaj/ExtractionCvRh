@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/cv")
 public class CVController {
 
-    private CVService cvService;
+    private final CVService cvService;
 
     public CVController(CVService cvService) {
         this.cvService = cvService;

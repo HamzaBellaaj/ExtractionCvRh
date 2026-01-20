@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/analyse")
 public class AnalyseController {
 
-    private AnalyseService analyseService;
+    private final AnalyseService analyseService;
 
     public AnalyseController(AnalyseService analyseService) {
         this.analyseService = analyseService;

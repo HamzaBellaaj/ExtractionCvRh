@@ -1,16 +1,17 @@
 package com.CvExt.CvExtIsetKeyrus.Service;
 
-import com.CvExt.CvExtIsetKeyrus.Repository.AnalyseRepository;
-import com.CvExt.CvExtIsetKeyrus.entities.Analyse;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.CvExt.CvExtIsetKeyrus.Repository.AnalyseRepository;
+import com.CvExt.CvExtIsetKeyrus.entities.Analyse;
 
 @Service
 public class AnalyseService {
 
-    private AnalyseRepository analyseRepository;
+    private final AnalyseRepository analyseRepository;
 
     public AnalyseService(AnalyseRepository analyseRepository) {
         this.analyseRepository = analyseRepository;
@@ -34,7 +35,7 @@ public class AnalyseService {
 
     // READ - Récupérer toutes les analyses d'un CV
     public List<Analyse> rechercherParCV(Integer idCv) {
-        return this.analyseRepository.findByCvIdCv(idCv);
+        return this.analyseRepository.findByIdCv(idCv);
     }
 
     // UPDATE - Mettre à jour une analyse

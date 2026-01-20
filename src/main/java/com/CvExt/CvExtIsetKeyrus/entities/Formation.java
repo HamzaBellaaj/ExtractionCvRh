@@ -25,20 +25,19 @@ public class Formation {
     @Column(name = "date_fin")
     private LocalDate dateFin;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cv", nullable = false)
-    private CV cv;
+    @Column(name = "id_cv")
+    private Integer idCv;
 
     // Constructeurs
     public Formation() {
     }
 
-    public Formation(String diplome, String etablissement, LocalDate dateDebut, LocalDate dateFin, CV cv) {
+    public Formation(String diplome, String etablissement, LocalDate dateDebut, LocalDate dateFin, Integer idCv) {
         this.diplome = diplome;
         this.etablissement = etablissement;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
-        this.cv = cv;
+        this.idCv = idCv;
     }
 
     // Getters et Setters
@@ -82,11 +81,11 @@ public class Formation {
         this.dateFin = dateFin;
     }
 
-    public CV getCv() {
-        return cv;
+    public Integer getIdCv() {
+        return idCv;
     }
 
-    public void setCv(CV cv) {
-        this.cv = cv;
+    public void setIdCv(Integer idCv) {
+        this.idCv = idCv;
     }
 }

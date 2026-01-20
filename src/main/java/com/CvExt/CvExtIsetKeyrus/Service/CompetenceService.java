@@ -1,16 +1,17 @@
 package com.CvExt.CvExtIsetKeyrus.Service;
 
-import com.CvExt.CvExtIsetKeyrus.Repository.CompetenceRepository;
-import com.CvExt.CvExtIsetKeyrus.entities.Competence;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.CvExt.CvExtIsetKeyrus.Repository.CompetenceRepository;
+import com.CvExt.CvExtIsetKeyrus.entities.Competence;
 
 @Service
 public class CompetenceService {
 
-    private CompetenceRepository competenceRepository;
+    private final CompetenceRepository competenceRepository;
 
     public CompetenceService(CompetenceRepository competenceRepository) {
         this.competenceRepository = competenceRepository;
@@ -34,7 +35,7 @@ public class CompetenceService {
 
     // READ - Récupérer toutes les compétences d'un CV
     public List<Competence> rechercherParCV(Integer idCv) {
-        return this.competenceRepository.findByCvIdCv(idCv);
+        return this.competenceRepository.findByIdCv(idCv);
     }
 
     // UPDATE - Mettre à jour une compétence

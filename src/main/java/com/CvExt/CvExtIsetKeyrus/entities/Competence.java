@@ -1,6 +1,11 @@
 package com.CvExt.CvExtIsetKeyrus.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "COMPETENCE")
@@ -20,19 +25,18 @@ public class Competence {
     @Column(name = "niveau")
     private String niveau;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cv", nullable = false)
-    private CV cv;
+    @Column(name = "id_cv")
+    private Integer idCv;
 
     // Constructeurs
     public Competence() {
     }
 
-    public Competence(String nomCompetence, String typeCompetence, String niveau, CV cv) {
+    public Competence(String nomCompetence, String typeCompetence, String niveau, Integer idCv) {
         this.nomCompetence = nomCompetence;
         this.typeCompetence = typeCompetence;
         this.niveau = niveau;
-        this.cv = cv;
+        this.idCv = idCv;
     }
 
     // Getters et Setters
@@ -68,11 +72,11 @@ public class Competence {
         this.niveau = niveau;
     }
 
-    public CV getCv() {
-        return cv;
+    public Integer getIdCv() {
+        return idCv;
     }
 
-    public void setCv(CV cv) {
-        this.cv = cv;
+    public void setIdCv(Integer idCv) {
+        this.idCv = idCv;
     }
 }

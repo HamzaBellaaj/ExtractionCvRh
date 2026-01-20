@@ -1,16 +1,17 @@
 package com.CvExt.CvExtIsetKeyrus.Service;
 
-import com.CvExt.CvExtIsetKeyrus.Repository.ExperienceRepository;
-import com.CvExt.CvExtIsetKeyrus.entities.Experience;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.CvExt.CvExtIsetKeyrus.Repository.ExperienceRepository;
+import com.CvExt.CvExtIsetKeyrus.entities.Experience;
 
 @Service
 public class ExperienceService {
 
-    private ExperienceRepository experienceRepository;
+    private final ExperienceRepository experienceRepository;
 
     public ExperienceService(ExperienceRepository experienceRepository) {
         this.experienceRepository = experienceRepository;
@@ -34,7 +35,7 @@ public class ExperienceService {
 
     // READ - Récupérer toutes les expériences d'un CV
     public List<Experience> rechercherParCV(Integer idCv) {
-        return this.experienceRepository.findByCvIdCv(idCv);
+        return this.experienceRepository.findByIdCv(idCv);
     }
 
     // UPDATE - Mettre à jour une expérience

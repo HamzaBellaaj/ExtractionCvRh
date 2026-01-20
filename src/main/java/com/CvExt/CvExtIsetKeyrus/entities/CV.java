@@ -2,8 +2,6 @@ package com.CvExt.CvExtIsetKeyrus.entities;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "CV")
 public class CV {
@@ -42,21 +40,6 @@ public class CV {
 
     @Column(name = "domaine")
     private String domaine;
-
-    @OneToMany(mappedBy = "cv", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Competence> competences;
-
-    @OneToMany(mappedBy = "cv", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Experience> experiences;
-
-    @OneToMany(mappedBy = "cv", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Formation> formations;
-
-    @OneToMany(mappedBy = "cv", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Langue> langues;
-
-    @OneToMany(mappedBy = "cv", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Analyse> analyses;
 
     // Constructeurs
     public CV() {
@@ -164,45 +147,5 @@ public class CV {
 
     public void setDomaine(String domaine) {
         this.domaine = domaine;
-    }
-
-    public List<Competence> getCompetences() {
-        return competences;
-    }
-
-    public void setCompetences(List<Competence> competences) {
-        this.competences = competences;
-    }
-
-    public List<Experience> getExperiences() {
-        return experiences;
-    }
-
-    public void setExperiences(List<Experience> experiences) {
-        this.experiences = experiences;
-    }
-
-    public List<Formation> getFormations() {
-        return formations;
-    }
-
-    public void setFormations(List<Formation> formations) {
-        this.formations = formations;
-    }
-
-    public List<Langue> getLangues() {
-        return langues;
-    }
-
-    public void setLangues(List<Langue> langues) {
-        this.langues = langues;
-    }
-
-    public List<Analyse> getAnalyses() {
-        return analyses;
-    }
-
-    public void setAnalyses(List<Analyse> analyses) {
-        this.analyses = analyses;
     }
 }

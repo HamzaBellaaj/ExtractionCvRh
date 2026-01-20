@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface FormationRepository extends JpaRepository<Formation, Integer> {
-    List<Formation> findByCvIdCv(Integer idCv);
+    List<Formation> findByIdCv(Integer idCv);
 }

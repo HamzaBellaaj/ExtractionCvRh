@@ -17,18 +17,17 @@ public class Langue {
     @Column(name = "niveau_langue")
     private String niveauLangue;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cv", nullable = false)
-    private CV cv;
+    @Column(name = "id_cv")
+    private Integer idCv;
 
     // Constructeurs
     public Langue() {
     }
 
-    public Langue(String nomLangue, String niveauLangue, CV cv) {
+    public Langue(String nomLangue, String niveauLangue, Integer idCv) {
         this.nomLangue = nomLangue;
         this.niveauLangue = niveauLangue;
-        this.cv = cv;
+        this.idCv = idCv;
     }
 
     // Getters et Setters
@@ -56,11 +55,11 @@ public class Langue {
         this.niveauLangue = niveauLangue;
     }
 
-    public CV getCv() {
-        return cv;
+    public Integer getIdCv() {
+        return idCv;
     }
 
-    public void setCv(CV cv) {
-        this.cv = cv;
+    public void setIdCv(Integer idCv) {
+        this.idCv = idCv;
     }
 }

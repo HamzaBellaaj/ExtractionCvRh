@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ExperienceRepository extends JpaRepository<Experience, Integer> {
-    List<Experience> findByCvIdCv(Integer idCv);
+    List<Experience> findByIdCv(Integer idCv);
 }

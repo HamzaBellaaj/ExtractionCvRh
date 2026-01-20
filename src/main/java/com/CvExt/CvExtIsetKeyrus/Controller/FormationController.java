@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/formation")
 public class FormationController {
 
-    private FormationService formationService;
+    private final FormationService formationService;
 
     public FormationController(FormationService formationService) {
         this.formationService = formationService;

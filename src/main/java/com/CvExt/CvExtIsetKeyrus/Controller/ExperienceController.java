@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/experience")
 public class ExperienceController {
 
-    private ExperienceService experienceService;
+    private final ExperienceService experienceService;
 
     public ExperienceController(ExperienceService experienceService) {
         this.experienceService = experienceService;

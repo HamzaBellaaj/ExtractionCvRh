@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CompetenceRepository extends JpaRepository<Competence, Integer> {
-    List<Competence> findByCvIdCv(Integer idCv);
+    List<Competence> findByIdCv(Integer idCv);
 }

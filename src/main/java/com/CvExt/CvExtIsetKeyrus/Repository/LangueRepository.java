@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface LangueRepository extends JpaRepository<Langue, Integer> {
-    List<Langue> findByCvIdCv(Integer idCv);
+    List<Langue> findByIdCv(Integer idCv);
 }

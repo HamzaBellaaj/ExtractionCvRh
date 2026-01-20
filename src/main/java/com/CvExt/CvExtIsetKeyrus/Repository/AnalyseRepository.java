@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface AnalyseRepository extends JpaRepository<Analyse, Integer> {
-    List<Analyse> findByCvIdCv(Integer idCv);
+    List<Analyse> findByIdCv(Integer idCv);
 }

@@ -1,16 +1,17 @@
 package com.CvExt.CvExtIsetKeyrus.Service;
 
-import com.CvExt.CvExtIsetKeyrus.Repository.CVRepository;
-import com.CvExt.CvExtIsetKeyrus.entities.CV;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.CvExt.CvExtIsetKeyrus.Repository.CVRepository;
+import com.CvExt.CvExtIsetKeyrus.entities.CV;
 
 @Service
 public class CVService {
 
-    private CVRepository cvRepository;
+    private final CVRepository cvRepository;
 
     public CVService(CVRepository cvRepository) {
         this.cvRepository = cvRepository;

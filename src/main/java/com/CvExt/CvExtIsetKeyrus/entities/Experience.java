@@ -28,21 +28,20 @@ public class Experience {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cv", nullable = false)
-    private CV cv;
+    @Column(name = "id_cv")
+    private Integer idCv;
 
     // Constructeurs
     public Experience() {
     }
 
-    public Experience(String poste, String entreprise, LocalDate dateDebut, LocalDate dateFin, String description, CV cv) {
+    public Experience(String poste, String entreprise, LocalDate dateDebut, LocalDate dateFin, String description, Integer idCv) {
         this.poste = poste;
         this.entreprise = entreprise;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.description = description;
-        this.cv = cv;
+        this.idCv = idCv;
     }
 
     // Getters et Setters
@@ -94,11 +93,11 @@ public class Experience {
         this.description = description;
     }
 
-    public CV getCv() {
-        return cv;
+    public Integer getIdCv() {
+        return idCv;
     }
 
-    public void setCv(CV cv) {
-        this.cv = cv;
+    public void setIdCv(Integer idCv) {
+        this.idCv = idCv;
     }
 }

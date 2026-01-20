@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/competence")
 public class CompetenceController {
 
-    private CompetenceService competenceService;
+    private final CompetenceService competenceService;
 
     public CompetenceController(CompetenceService competenceService) {
         this.competenceService = competenceService;

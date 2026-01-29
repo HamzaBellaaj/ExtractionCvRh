@@ -49,4 +49,9 @@ public class CVService {
         }
         return false;
     }
+
+    // READ - Récupérer plusieurs CVs par liste d'IDs
+    public List<CV> rechercherParIds(List<Integer> ids) {
+        return this.cvRepository.findByIdCvIn(ids);
+    }
 }

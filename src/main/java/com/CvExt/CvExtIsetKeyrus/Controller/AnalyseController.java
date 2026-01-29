@@ -1,12 +1,22 @@
 package com.CvExt.CvExtIsetKeyrus.Controller;
 
-import com.CvExt.CvExtIsetKeyrus.Service.AnalyseService;
-import com.CvExt.CvExtIsetKeyrus.entities.Analyse;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.CvExt.CvExtIsetKeyrus.Service.AnalyseService;
+import com.CvExt.CvExtIsetKeyrus.entities.Analyse;
+import com.CvExt.CvExtIsetKeyrus.entities.CV;
 
 @RestController
 @RequestMapping("/analyse")
@@ -68,5 +78,25 @@ public class AnalyseController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // SEARCH - Rechercher CV par mots-clés (trié par score_global DESC)
+    @GetMapping("/search")
+    public ResponseEntity<List<Analyse>> rechercherParMotsCles(@RequestParam List<String> keywords) {
+        if (keywords == null || keywords.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        List<Analyse> analyses = this.analyseService.rechercherParMotsCles(keywords);
+        return new ResponseEntity<>(analyses, HttpStatus.OK);
+    }
+
+    // SEARCH - Rechercher et retourner directement les CVs (optimisé, trié par score)
+    @GetMapping("/search/cvs")
+    public ResponseEntity<List<CV>> rechercherCvsParMotsCles(@RequestParam List<String> keywords) {
+        if (keywords == null || keywords.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        List<CV> cvs = this.analyseService.rechercherCvsParMotsCles(keywords);
+        return new ResponseEntity<>(cvs, HttpStatus.OK);
     }
 }

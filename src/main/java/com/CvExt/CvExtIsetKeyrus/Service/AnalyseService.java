@@ -6,15 +6,19 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.CvExt.CvExtIsetKeyrus.Repository.AnalyseRepository;
+import com.CvExt.CvExtIsetKeyrus.Repository.CVRepository;
 import com.CvExt.CvExtIsetKeyrus.entities.Analyse;
+import com.CvExt.CvExtIsetKeyrus.entities.CV;
 
 @Service
 public class AnalyseService {
 
     private final AnalyseRepository analyseRepository;
+    private final CVRepository cvRepository;
 
-    public AnalyseService(AnalyseRepository analyseRepository) {
+    public AnalyseService(AnalyseRepository analyseRepository, CVRepository cvRepository) {
         this.analyseRepository = analyseRepository;
+        this.cvRepository = cvRepository;
     }
 
     // CREATE - Créer une nouvelle analyse
@@ -53,5 +57,39 @@ public class AnalyseService {
             return true;
         }
         return false;
+    }
+
+    // SEARCH - Rechercher par mots-clés (recherche partielle, trié par score)
+    public List<Analyse> rechercherParMotsCles(List<String> keywords) {
+        return this.analyseRepository.findAll().stream()
+                .filter(a -> a.getMotsClesPrincipaux() != null && keywords.stream()
+                        .anyMatch(kw -> a.getMotsClesPrincipaux().toLowerCase().contains(kw.toLowerCase())))
+                .sorted((a1, a2) -> {
+                    Double s1 = a1.getScoreGlobal() != null ? a1.getScoreGlobal() : 0.0;
+                    Double s2 = a2.getScoreGlobal() != null ? a2.getScoreGlobal() : 0.0;
+                    return s2.compareTo(s1);
+                })
+                .toList();
+    }
+
+    // SEARCH - Rechercher CVs par mots-clés (optimisé, retourne CVs triés par score)
+    public List<CV> rechercherCvsParMotsCles(List<String> keywords) {
+        List<Analyse> analyses = rechercherParMotsCles(keywords);
+        List<Integer> idCvs = analyses.stream()
+                .map(Analyse::getIdCv)
+                .distinct()
+                .toList();
+        
+        if (idCvs.isEmpty()) {
+            return List.of();
+        }
+        
+        List<CV> cvs = cvRepository.findByIdCvIn(idCvs);
+        
+        // Trier les CVs selon l'ordre des analyses (par score)
+        return idCvs.stream()
+                .map(id -> cvs.stream().filter(cv -> cv.getIdCv().equals(id)).findFirst().orElse(null))
+                .filter(cv -> cv != null)
+                .toList();
     }
 }

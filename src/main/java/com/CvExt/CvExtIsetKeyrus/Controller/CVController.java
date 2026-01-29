@@ -1,12 +1,21 @@
 package com.CvExt.CvExtIsetKeyrus.Controller;
 
-import com.CvExt.CvExtIsetKeyrus.Service.CVService;
-import com.CvExt.CvExtIsetKeyrus.entities.CV;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.CvExt.CvExtIsetKeyrus.Service.CVService;
+import com.CvExt.CvExtIsetKeyrus.entities.CV;
 
 @RestController
 @RequestMapping("/cv")
@@ -56,5 +65,15 @@ public class CVController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // GET - Récupérer plusieurs CVs par liste d'IDs
+    @GetMapping("/batch")
+    public ResponseEntity<List<CV>> rechercherParIds(@RequestParam List<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        List<CV> cvs = this.cvService.rechercherParIds(ids);
+        return new ResponseEntity<>(cvs, HttpStatus.OK);
     }
 }

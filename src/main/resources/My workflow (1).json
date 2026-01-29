@@ -1,0 +1,1051 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=IMPORTANT : Ne jamais inventer de nom/prénom. Utilise uniquement les informations présentes dans le CV fourni en fichier.\nSi tu ne trouves pas une information, mets null.\n\nVoici les données auxquelles tu as accès :\n{{ $json.info }}\n{{ $json.text }}\n\nLis et analyse intégralement ce fichier avant de produire le résultat.\n\nTu es un agent IA expert en lecture, compréhension, extraction et structuration de CV.\n\nTu dois analyser le document fourni (CV en PDF ou image), extraire les informations disponibles, et produire UN SEUL objet JSON, STRICTEMENT conforme au schéma ci-dessous, afin qu’il puisse être inséré directement dans une base de données relationnelle.\n\n────────────────────────────────────────\nRÈGLES ABSOLUES (OBLIGATOIRES)\n────────────────────────────────────────\n\nLe résultat DOIT être un JSON strictement valide.\n\nAUCUN texte, commentaire ou explication hors du JSON.\n\nLes clés doivent être EXACTEMENT celles définies ci-dessous (respect strict de la casse).\n\nSi une information n’est pas présente dans le CV → mettre la valeur null.\n\nSi une table entière ne peut pas être remplie → retourner un tableau vide [].\n\nNe JAMAIS inventer de données factuelles (dates, entreprises, diplômes, compétences).\n\nLes dates doivent être au format YYYY-MM-DD ou null.\n\nL’objet analyse DOIT être généré par toi (agent IA), même si le CV est incomplet.\n\nTous les scores doivent être des nombres décimaux entre 0 et 10.\n\nNe jamais omettre une clé : toutes doivent exister.\n\n────────────────────────────────────────\nSTRUCTURE JSON À RESPECTER STRICTEMENT\n────────────────────────────────────────\n\n{\n\"informations_personnelles\": {\n\"nom\": null,\n\"prenom\": null,\n\"email\": null,\n\"telephone\": null,\n\"adresse\": null,\n\"titre_profil\": null,\n\"resume_profil\": null\n},\n\n\"experience_globale\": {\n\"annees_experience\": null,\n\"niveau_profil\": null,\n\"domaine\": null\n},\n\n\"competences\": [],\n\n\"experiences\": [],\n\n\"formations\": [],\n\n\"langues\": [],\n\n\"analyse\": {\n\"mots_cles_principaux\": [],\n\"score_global\": null,\n\"score_technique\": null,\n\"score_soft_skills\": null\n}\n}\n\n────────────────────────────────────────\nDÉFINITION DES TABLES\n────────────────────────────────────────\n\n• competences\n{\n\"nom_competence\": null,\n\"type_competence\": \"Technique | Soft Skill | Autre\",\n\"niveau\": null\n}\n\n• experiences\n{\n\"poste\": null,\n\"entreprise\": null,\n\"date_debut\": null,\n\"date_fin\": null,\n\"description\": null\n}\n\n• formations\n{\n\"diplome\": null,\n\"etablissement\": null,\n\"date_debut\": null,\n\"date_fin\": null\n}\n\n• langues\n{\n\"nom_langue\": null,\n\"niveau_langue\": null\n}\n\n────────────────────────────────────────\nRÈGLES SPÉCIALES POUR L’ANALYSE (AGENT IA)\n────────────────────────────────────────\n\nL’objet analyse doit être évalué selon un barème clair, objectif et reproductible, avec des scores sur 10, arrondis à 1 chiffre après la virgule.\n\n1️⃣ mots_cles_principaux\n\nExtraire les mots-clés métier, techniques et fonctionnels réellement présents dans le CV\n\nMaximum 15 mots-clés\n\nAucun mot-clé inventé\n\n2️⃣ score_technique (sur 10)\n\nCalcul basé sur les critères suivants :\n\nA. Compétences techniques (0 à 4 points)\n\n0 : aucune compétence technique identifiable\n\n1 : compétences vagues ou très basiques\n\n2 : compétences techniques claires mais limitées\n\n3 : compétences techniques solides et cohérentes\n\n4 : compétences techniques avancées ou spécialisées\n\nB. Expérience professionnelle technique (0 à 3 points)\n\n0 : aucune expérience technique\n\n1 : stages ou expériences courtes\n\n2 : expérience professionnelle confirmée\n\n3 : expérience longue ou à forte responsabilité technique\n\nC. Formation et cohérence du parcours (0 à 2 points)\n\n0 : aucune formation identifiable\n\n1 : formation partiellement liée au domaine\n\n2 : formation clairement alignée avec le domaine\n\nD. Clarté et structuration technique du CV (0 à 1 point)\n\n0 : informations floues ou mal structurées\n\n1 : informations claires et bien présentées\n\n➡️ score_technique = somme des points (max 10)\n\n3️⃣ score_soft_skills (sur 10)\n\nÉvalué uniquement à partir des indices implicites du CV.\n\nA. Communication & clarté (0 à 3 points)\n\n0 : CV confus ou pauvre\n\n1 : communication basique\n\n2 : communication claire\n\n3 : communication structurée et professionnelle\n\nB. Autonomie & responsabilité (0 à 3 points)\n\n0 : aucun indice\n\n1 : participation simple\n\n2 : responsabilités visibles\n\n3 : autonomie forte ou leadership implicite\n\nC. Adaptabilité & évolution (0 à 2 points)\n\n0 : aucun indice\n\n1 : évolution limitée\n\n2 : progression ou montée en compétences claire\n\nD. Rigueur & professionnalisme (0 à 2 points)\n\n0 : CV négligé ou incohérent\n\n1 : CV correct\n\n2 : CV soigné et cohérent\n\n➡️ score_soft_skills = somme des points (max 10)\n\n4️⃣ score_global (sur 10)\n\nCalculer le score global selon la formule suivante :\n\nscore_global = (score_technique × 0.6) + (score_soft_skills × 0.4)\n\nRésultat décimal\n\nArrondi à 1 chiffre après la virgule\n\nNe jamais dépasser 10\n\n────────────────────────────────────────\nRAPPEL FINAL\n────────────────────────────────────────\n\nJSON uniquement\n\nAucun markdown\n\nAucun texte hors JSON\n\nAucune clé manquante\n\nCommence immédiatement l’analyse et retourne UNIQUEMENT le JSON.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -1280,
+        240
+      ],
+      "id": "8ce90c3a-bfed-44ca-9400-5ec5b050dcc6",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/upload-cv",
+        "options": {
+          "binaryPropertyName": "file"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -2048,
+        256
+      ],
+      "id": "b90297fb-77ee-4d7c-9ead-992162f3626d",
+      "name": "Webhook",
+      "webhookId": "2d76f1d6-b968-4c38-8bc2-52f1e29a64d1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1) Récupère le texte renvoyé par l'AI Agent\nconst raw = $json.output;\n\n// 2) Nettoie les ```json ... ``` si l'agent les a mis\nconst cleaned = raw\n  .replace(/```json\\s*/i, '')\n  .replace(/```/g, '')\n  .trim();\n\n// 3) Parse en vrai objet JSON\nlet obj;\ntry {\n  obj = JSON.parse(cleaned);\n} catch (e) {\n  throw new Error(\n    \"Impossible de parser le JSON. Voici le début du texte reçu:\\n\" +\n    cleaned.slice(0, 300)\n  );\n}\n\n// 4) (Optionnel) Garantir que toutes les clés existent (au cas où)\nobj.informations_personnelles ??= {\n  nom: null, prenom: null, email: null, telephone: null,\n  adresse: null, titre_profil: null, resume_profil: null\n};\nobj.experience_globale ??= { annees_experience: null, niveau_profil: null, domaine: null };\nobj.competences ??= [];\nobj.experiences ??= [];\nobj.formations ??= [];\nobj.langues ??= [];\nobj.analyse ??= { mots_cles_principaux: [], score_global: null, score_technique: null, score_soft_skills: null };\n\n// 5) Retourne un vrai objet (prêt pour Spring Boot)\nreturn [{ json: obj }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -752,
+        240
+      ],
+      "id": "3de12a90-4b8e-4976-bc3e-6b37c6e01783",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1296,
+        448
+      ],
+      "id": "ce5bd796-dac1-4c26-9e95-91f577061337",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "0NZgrJtSFBtSrYBS",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:4000/api/cv",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $('Webhook').item.json.headers.authorization }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nom",
+              "value": "={{ $json.informations_personnelles.nom }}"
+            },
+            {
+              "name": "prenom",
+              "value": "={{ $json.informations_personnelles.prenom }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $json.informations_personnelles.email }}"
+            },
+            {
+              "name": "telephone",
+              "value": "={{ $json.informations_personnelles.telephone }}"
+            },
+            {
+              "name": "adresse",
+              "value": "={{ $json.informations_personnelles.adresse }}"
+            },
+            {
+              "name": "titreProfil",
+              "value": "={{ $json.informations_personnelles.titre_profil }}"
+            },
+            {
+              "name": "resumeProfil",
+              "value": "={{ $json.informations_personnelles.resume_profil }}"
+            },
+            {
+              "name": "anneesExperience",
+              "value": "={{ $json.experience_globale.annees_experience }}"
+            },
+            {
+              "name": "niveauProfil",
+              "value": "={{ $json.experience_globale.niveau_profil }}"
+            },
+            {
+              "name": "domaine",
+              "value": "={{ $json.experience_globale.domaine }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        864,
+        336
+      ],
+      "id": "6034c773-f8f7-4964-bf3b-2178aa9c60d3",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:4000/api/competence",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $('Webhook').item.json.headers.authorization }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nomCompetence",
+              "value": "={{ $json.nom_competence }}"
+            },
+            {
+              "name": "typeCompetence",
+              "value": "={{ $json.type_competence }}"
+            },
+            {
+              "name": "niveau",
+              "value": "={{ $json.niveau }}"
+            },
+            {
+              "name": "idCv",
+              "value": "={{ $json.idCv }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1776,
+        256
+      ],
+      "id": "911145c5-88a8-4aea-b4de-3b71791f5b4a",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// JUSTE EXTRAIRE LES COMPÉTENCES DANS UN TABLEAU\nconst cvData = $input.first().json; // Tes données d'entrée\nconst competences = cvData.competences || [];\n\n// Retourner seulement le tableau de compétences\nreturn competences;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        144
+      ],
+      "id": "d9736ac0-f1de-46e0-a9b8-57f5145be213",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1520,
+        272
+      ],
+      "id": "cd533e81-4bd8-4d65-8a1f-faaab51ad154",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "const cvData = $input.first().json;\nconst experiences = cvData.experiences || [];\n\nreturn experiences;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1008,
+        608
+      ],
+      "id": "45c8f0f5-f85d-4812-bb9e-a164794bfebd",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1552,
+        496
+      ],
+      "id": "3eade5e2-8adb-4389-8e21-11b708bb2b69",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:4000/api/experience",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $('Webhook').item.json.headers.authorization }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "poste",
+              "value": "={{ $json.poste }}"
+            },
+            {
+              "name": "entreprise",
+              "value": "={{ $json.entreprise }}"
+            },
+            {
+              "name": "dateDebut",
+              "value": "={{ $json.date_debut }}"
+            },
+            {
+              "name": "dateFin",
+              "value": "={{ $json.date_fin }}"
+            },
+            {
+              "name": "description",
+              "value": "={{ $json.description }}"
+            },
+            {
+              "name": "idCv",
+              "value": "={{ $json.idCv }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1792,
+        496
+      ],
+      "id": "d34f5aa1-ca76-4cbd-8838-448bdece03c4",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1552,
+        736
+      ],
+      "id": "8fdbd444-ba2f-4286-8424-fb208771e4be",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// JUSTE EXTRAIRE LES LANGUES DANS UN TABLEAU\nconst cvData = $input.first().json;\nconst langues = cvData.langues || [];\n\n// Retourner seulement le tableau de langues\nreturn langues;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        1040
+      ],
+      "id": "73ae5cc4-e256-4db4-898e-fd6da15ba9a9",
+      "name": "Code in JavaScript4"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1552,
+        1024
+      ],
+      "id": "c09b87b2-c9c6-46e9-8056-0ee9dde2a663",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:4000/api/formation",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $('Webhook').item.json.headers.authorization }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "idCv",
+              "value": "={{ $json.idCv }}"
+            },
+            {
+              "name": "etablissement",
+              "value": "={{ $json.etablissement }}"
+            },
+            {
+              "name": "dateDebut",
+              "value": "={{ $json.date_debut }}"
+            },
+            {
+              "name": "dateFin",
+              "value": "={{ $json.date_fin }}"
+            },
+            {
+              "name": "diplome",
+              "value": "={{ $json.diplome }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1808,
+        736
+      ],
+      "id": "228b353d-82ed-4ecb-b6a1-d3438f4e0f60",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:4000/api/langue",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $('Webhook').item.json.headers.authorization }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "idCv",
+              "value": "={{ $json.idCv }}"
+            },
+            {
+              "name": "nomLangue",
+              "value": "={{ $json.nom_langue }}"
+            },
+            {
+              "name": "niveauLangue",
+              "value": "={{ $json.niveau_langue }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1824,
+        1024
+      ],
+      "id": "2f0733c4-76ef-4afb-9fe3-c33f2587bf36",
+      "name": "HTTP Request4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:4000/api/analyse",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $('Webhook').item.json.headers.authorization }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "idCv",
+              "value": "={{ $json.idCv }}"
+            },
+            {
+              "name": "motsClesPrincipaux",
+              "value": "={{ $json.mots_cles_principaux }}"
+            },
+            {
+              "name": "scoreGlobal",
+              "value": "={{ $json.score_global }}"
+            },
+            {
+              "name": "scoreTechnique",
+              "value": "={{ $json.score_technique }}"
+            },
+            {
+              "name": "scoreSoftSkills",
+              "value": "={{ $json.score_soft_skills }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1840,
+        1264
+      ],
+      "id": "683eb833-7438-4562-912d-7a7c505c2f29",
+      "name": "HTTP Request5"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1552,
+        1264
+      ],
+      "id": "bed433e6-d5c4-4c07-8247-829b2ec0b40f",
+      "name": "Merge4"
+    },
+    {
+      "parameters": {
+        "jsCode": "// EXTRAIRE ET TRANSFORMER L'ANALYSE\nconst cvData = $input.first().json;\nconst analyse = cvData.analyse || {};\n\n// Transformer les mots-clés de tableau à chaîne\nconst motsClesString = Array.isArray(analyse.mots_cles_principaux) \n  ? analyse.mots_cles_principaux.join(', ')  // \"JavaScript, React, Node.js\"\n  : (analyse.mots_cles_principaux || '');    // ou chaîne vide\n\n// Retourner l'analyse avec mots-clés en chaîne\nreturn {\n  mots_cles_principaux: motsClesString,\n  score_global: analyse.score_global || 0,\n  score_technique: analyse.score_technique || 0,\n  score_soft_skills: analyse.score_soft_skills || 0\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        1280
+      ],
+      "id": "95997473-efb2-4f62-8dab-ca87617e14da",
+      "name": "Code in JavaScript5"
+    },
+    {
+      "parameters": {
+        "jsCode": "// JUSTE EXTRAIRE LES FORMATIONS DANS UN TABLEAU\nconst cvData = $input.first().json;\nconst formations = cvData.formations || [];\n\n// Retourner seulement le tableau de formations\nreturn formations;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1008,
+        800
+      ],
+      "id": "630b2900-bfef-4343-be10-2100708f5986",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "887c2076-9630-463d-8268-ea95035f7ba6",
+              "leftValue": "={{ $json.nombre_competences }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        928,
+        160
+      ],
+      "id": "e3866539-9123-463b-8750-694765a64cc2",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "// EXTRAIRE COMPÉTENCES AVEC COMPTEUR\nconst cvData = $input.first().json;\nconst competences = cvData.competences || [];\n\n// Ajouter le nombre de compétences\nreturn {\n  competences: competences, // Le tableau original\n  nombre_competences: competences.length // Le compteur (entier)\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        144
+      ],
+      "id": "02bdd920-47e2-49a4-82fb-cfd461e01fec",
+      "name": "Code in JavaScript6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "887c2076-9630-463d-8268-ea95035f7ba6",
+              "leftValue": "={{ $json.nombre_formations }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        640,
+        816
+      ],
+      "id": "561912f0-7c1d-4042-af9e-59684bd791ba",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "887c2076-9630-463d-8268-ea95035f7ba6",
+              "leftValue": "={{ $json.nombre_langues }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        544,
+        1056
+      ],
+      "id": "c9a372eb-3758-4aab-b06a-a61ce960e0bd",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "887c2076-9630-463d-8268-ea95035f7ba6",
+              "leftValue": "={{ $json.nombre_experiences }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        752,
+        624
+      ],
+      "id": "3bf24f67-6b75-4204-b211-35fb801b9fbb",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "jsCode": "const cvData = $input.first().json;\nconst experiences = cvData.experiences || [];\n\nreturn {\n  experiences: experiences,\n  nombre_experiences: experiences.length\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        512,
+        608
+      ],
+      "id": "3c7b5d3a-5696-4dde-8a26-30ebe750044c",
+      "name": "Code in JavaScript7"
+    },
+    {
+      "parameters": {
+        "jsCode": "const cvData = $input.first().json;\nconst formations = cvData.formations || [];\n\nreturn {\n  formations: formations,\n  nombre_formations: formations.length\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        816
+      ],
+      "id": "677ce121-2226-49e1-b1c2-03da0300b4a0",
+      "name": "Code in JavaScript8"
+    },
+    {
+      "parameters": {
+        "jsCode": "const cvData = $input.first().json;\nconst langues = cvData.langues || [];\n\nreturn {\n  langues: langues,\n  nombre_langues: langues.length\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        1056
+      ],
+      "id": "dcd77ba8-b36a-4063-9eed-09df44ac424f",
+      "name": "Code in JavaScript9"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "file0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -1616,
+        240
+      ],
+      "id": "f0107a70-9174-497c-86d5-8a9e04651bb8",
+      "name": "Extract from File"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript6",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript7",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript8",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript9",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript4": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge4": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript5": {
+      "main": [
+        [
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        []
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript6": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript7": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript8": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript9": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "148b8a91-1f7c-4c27-b151-818cb486a113",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e3d5e29ecca87ff479eeafaa92b2163656c12bd872f6fa83746092054877fe0d"
+  },
+  "id": "ltduhd9MSjDnI0TnAD_aN",
+  "tags": []
+}

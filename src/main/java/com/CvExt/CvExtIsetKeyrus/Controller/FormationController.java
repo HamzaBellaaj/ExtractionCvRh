@@ -1,72 +1,61 @@
 package com.CvExt.CvExtIsetKeyrus.Controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.CvExt.CvExtIsetKeyrus.Service.FormationService;
 import com.CvExt.CvExtIsetKeyrus.entities.Formation;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/formation")
 public class FormationController {
 
-    private final FormationService formationService;
+    @Autowired
+    private FormationService formationService;
 
-    public FormationController(FormationService formationService) {
-        this.formationService = formationService;
-    }
-
-    // CREATE - Créer une nouvelle formation
+    // Créer une formation
     @PostMapping
-    public ResponseEntity<Formation> creer(@RequestBody Formation formation) {
-        Formation formationCreated = this.formationService.creer(formation);
-        return new ResponseEntity<>(formationCreated, HttpStatus.CREATED);
+    public Formation creer(@RequestBody Formation formation) {
+        return formationService.creer(formation);
     }
 
-    // READ - Récupérer toutes les formations
+    // Récupérer toutes les formations
     @GetMapping
-    public ResponseEntity<List<Formation>> rechercher() {
-        List<Formation> formations = this.formationService.rechercher();
-        return new ResponseEntity<>(formations, HttpStatus.OK);
+    public List<Formation> rechercher() {
+        return formationService.rechercher();
     }
 
-    // READ - Récupérer une formation par ID
+    // Récupérer une formation par ID
     @GetMapping("/{id}")
-    public ResponseEntity<Formation> lire(@PathVariable Integer id) {
-        Formation formation = this.formationService.lire(id);
-        if (formation != null) {
-            return new ResponseEntity<>(formation, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public Formation lire(@PathVariable Integer id) {
+        return formationService.lire(id);
     }
 
-    // READ - Récupérer toutes les formations d'un CV
+    // Récupérer les formations d'un CV
     @GetMapping("/cv/{idCv}")
-    public ResponseEntity<List<Formation>> rechercherParCV(@PathVariable Integer idCv) {
-        List<Formation> formations = this.formationService.rechercherParCV(idCv);
-        return new ResponseEntity<>(formations, HttpStatus.OK);
+    public List<Formation> rechercherParCV(@PathVariable Integer idCv) {
+        return formationService.rechercherParCV(idCv);
     }
 
-    // UPDATE - Mettre à jour une formation
+    // Modifier une formation
     @PutMapping("/{id}")
-    public ResponseEntity<Formation> mettre_a_jour(@PathVariable Integer id, @RequestBody Formation formation) {
+    public Formation modifier(@PathVariable Integer id, @RequestBody Formation formation) {
         formation.setIdFormation(id);
-        Formation formationUpdated = this.formationService.mettre_a_jour(formation);
-        if (formationUpdated != null) {
-            return new ResponseEntity<>(formationUpdated, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return formationService.mettre_a_jour(formation);
     }
 
-    // DELETE - Supprimer une formation
+    // Supprimer une formation
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> supprimer(@PathVariable Integer id) {
-        boolean isDeleted = this.formationService.supprimer(id);
-        if (isDeleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public void supprimer(@PathVariable Integer id) {
+        formationService.supprimer(id);
     }
 }

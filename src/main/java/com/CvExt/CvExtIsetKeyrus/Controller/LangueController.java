@@ -1,72 +1,61 @@
 package com.CvExt.CvExtIsetKeyrus.Controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.CvExt.CvExtIsetKeyrus.Service.LangueService;
 import com.CvExt.CvExtIsetKeyrus.entities.Langue;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/langue")
 public class LangueController {
 
-    private final LangueService langueService;
+    @Autowired
+    private LangueService langueService;
 
-    public LangueController(LangueService langueService) {
-        this.langueService = langueService;
-    }
-
-    // CREATE - Créer une nouvelle langue
+    // Créer une langue
     @PostMapping
-    public ResponseEntity<Langue> creer(@RequestBody Langue langue) {
-        Langue langueCreated = this.langueService.creer(langue);
-        return new ResponseEntity<>(langueCreated, HttpStatus.CREATED);
+    public Langue creer(@RequestBody Langue langue) {
+        return langueService.creer(langue);
     }
 
-    // READ - Récupérer toutes les langues
+    // Récupérer toutes les langues
     @GetMapping
-    public ResponseEntity<List<Langue>> rechercher() {
-        List<Langue> langues = this.langueService.rechercher();
-        return new ResponseEntity<>(langues, HttpStatus.OK);
+    public List<Langue> rechercher() {
+        return langueService.rechercher();
     }
 
-    // READ - Récupérer une langue par ID
+    // Récupérer une langue par ID
     @GetMapping("/{id}")
-    public ResponseEntity<Langue> lire(@PathVariable Integer id) {
-        Langue langue = this.langueService.lire(id);
-        if (langue != null) {
-            return new ResponseEntity<>(langue, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public Langue lire(@PathVariable Integer id) {
+        return langueService.lire(id);
     }
 
-    // READ - Récupérer toutes les langues d'un CV
+    // Récupérer les langues d'un CV
     @GetMapping("/cv/{idCv}")
-    public ResponseEntity<List<Langue>> rechercherParCV(@PathVariable Integer idCv) {
-        List<Langue> langues = this.langueService.rechercherParCV(idCv);
-        return new ResponseEntity<>(langues, HttpStatus.OK);
+    public List<Langue> rechercherParCV(@PathVariable Integer idCv) {
+        return langueService.rechercherParCV(idCv);
     }
 
-    // UPDATE - Mettre à jour une langue
+    // Modifier une langue
     @PutMapping("/{id}")
-    public ResponseEntity<Langue> mettre_a_jour(@PathVariable Integer id, @RequestBody Langue langue) {
+    public Langue modifier(@PathVariable Integer id, @RequestBody Langue langue) {
         langue.setIdLangue(id);
-        Langue langueUpdated = this.langueService.mettre_a_jour(langue);
-        if (langueUpdated != null) {
-            return new ResponseEntity<>(langueUpdated, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return langueService.mettre_a_jour(langue);
     }
 
-    // DELETE - Supprimer une langue
+    // Supprimer une langue
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> supprimer(@PathVariable Integer id) {
-        boolean isDeleted = this.langueService.supprimer(id);
-        if (isDeleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public void supprimer(@PathVariable Integer id) {
+        langueService.supprimer(id);
     }
 }

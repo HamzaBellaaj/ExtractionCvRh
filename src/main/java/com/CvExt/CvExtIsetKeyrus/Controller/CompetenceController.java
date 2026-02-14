@@ -1,72 +1,61 @@
 package com.CvExt.CvExtIsetKeyrus.Controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.CvExt.CvExtIsetKeyrus.Service.CompetenceService;
 import com.CvExt.CvExtIsetKeyrus.entities.Competence;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/competence")
 public class CompetenceController {
 
-    private final CompetenceService competenceService;
+    @Autowired
+    private CompetenceService competenceService;
 
-    public CompetenceController(CompetenceService competenceService) {
-        this.competenceService = competenceService;
-    }
-
-    // CREATE - Créer une nouvelle compétence
+    // Créer une compétence
     @PostMapping
-    public ResponseEntity<Competence> creer(@RequestBody Competence competence) {
-        Competence competenceCreated = this.competenceService.creer(competence);
-        return new ResponseEntity<>(competenceCreated, HttpStatus.CREATED);
+    public Competence creer(@RequestBody Competence competence) {
+        return competenceService.creer(competence);
     }
 
-    // READ - Récupérer toutes les compétences
+    // Récupérer toutes les compétences
     @GetMapping
-    public ResponseEntity<List<Competence>> rechercher() {
-        List<Competence> competences = this.competenceService.rechercher();
-        return new ResponseEntity<>(competences, HttpStatus.OK);
+    public List<Competence> rechercher() {
+        return competenceService.rechercher();
     }
 
-    // READ - Récupérer une compétence par ID
+    // Récupérer une compétence par ID
     @GetMapping("/{id}")
-    public ResponseEntity<Competence> lire(@PathVariable Integer id) {
-        Competence competence = this.competenceService.lire(id);
-        if (competence != null) {
-            return new ResponseEntity<>(competence, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public Competence lire(@PathVariable Integer id) {
+        return competenceService.lire(id);
     }
 
-    // READ - Récupérer toutes les compétences d'un CV
+    // Récupérer les compétences d'un CV
     @GetMapping("/cv/{idCv}")
-    public ResponseEntity<List<Competence>> rechercherParCV(@PathVariable Integer idCv) {
-        List<Competence> competences = this.competenceService.rechercherParCV(idCv);
-        return new ResponseEntity<>(competences, HttpStatus.OK);
+    public List<Competence> rechercherParCV(@PathVariable Integer idCv) {
+        return competenceService.rechercherParCV(idCv);
     }
 
-    // UPDATE - Mettre à jour une compétence
+    // Modifier une compétence
     @PutMapping("/{id}")
-    public ResponseEntity<Competence> mettre_a_jour(@PathVariable Integer id, @RequestBody Competence competence) {
+    public Competence modifier(@PathVariable Integer id, @RequestBody Competence competence) {
         competence.setIdCompetence(id);
-        Competence competenceUpdated = this.competenceService.mettre_a_jour(competence);
-        if (competenceUpdated != null) {
-            return new ResponseEntity<>(competenceUpdated, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return competenceService.mettre_a_jour(competence);
     }
 
-    // DELETE - Supprimer une compétence
+    // Supprimer une compétence
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> supprimer(@PathVariable Integer id) {
-        boolean isDeleted = this.competenceService.supprimer(id);
-        if (isDeleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public void supprimer(@PathVariable Integer id) {
+        competenceService.supprimer(id);
     }
 }

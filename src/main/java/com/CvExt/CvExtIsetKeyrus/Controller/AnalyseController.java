@@ -2,8 +2,7 @@ package com.CvExt.CvExtIsetKeyrus.Controller;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,81 +21,55 @@ import com.CvExt.CvExtIsetKeyrus.entities.CV;
 @RequestMapping("/analyse")
 public class AnalyseController {
 
-    private final AnalyseService analyseService;
+    @Autowired
+    private AnalyseService analyseService;
 
-    public AnalyseController(AnalyseService analyseService) {
-        this.analyseService = analyseService;
-    }
-
-    // CREATE - Créer une nouvelle analyse
+    // Créer une analyse
     @PostMapping
-    public ResponseEntity<Analyse> creer(@RequestBody Analyse analyse) {
-        Analyse analyseCreated = this.analyseService.creer(analyse);
-        return new ResponseEntity<>(analyseCreated, HttpStatus.CREATED);
+    public Analyse creer(@RequestBody Analyse analyse) {
+        return analyseService.creer(analyse);
     }
 
-    // READ - Récupérer toutes les analyses
+    // Récupérer toutes les analyses
     @GetMapping
-    public ResponseEntity<List<Analyse>> rechercher() {
-        List<Analyse> analyses = this.analyseService.rechercher();
-        return new ResponseEntity<>(analyses, HttpStatus.OK);
+    public List<Analyse> rechercher() {
+        return analyseService.rechercher();
     }
 
-    // READ - Récupérer une analyse par ID
+    // Récupérer une analyse par ID
     @GetMapping("/{id}")
-    public ResponseEntity<Analyse> lire(@PathVariable Integer id) {
-        Analyse analyse = this.analyseService.lire(id);
-        if (analyse != null) {
-            return new ResponseEntity<>(analyse, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public Analyse lire(@PathVariable Integer id) {
+        return analyseService.lire(id);
     }
 
-    // READ - Récupérer toutes les analyses d'un CV
+    // Récupérer les analyses d'un CV
     @GetMapping("/cv/{idCv}")
-    public ResponseEntity<List<Analyse>> rechercherParCV(@PathVariable Integer idCv) {
-        List<Analyse> analyses = this.analyseService.rechercherParCV(idCv);
-        return new ResponseEntity<>(analyses, HttpStatus.OK);
+    public List<Analyse> rechercherParCV(@PathVariable Integer idCv) {
+        return analyseService.rechercherParCV(idCv);
     }
 
-    // UPDATE - Mettre à jour une analyse
+    // Modifier une analyse
     @PutMapping("/{id}")
-    public ResponseEntity<Analyse> mettre_a_jour(@PathVariable Integer id, @RequestBody Analyse analyse) {
+    public Analyse modifier(@PathVariable Integer id, @RequestBody Analyse analyse) {
         analyse.setIdAnalyse(id);
-        Analyse analyseUpdated = this.analyseService.mettre_a_jour(analyse);
-        if (analyseUpdated != null) {
-            return new ResponseEntity<>(analyseUpdated, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return analyseService.mettre_a_jour(analyse);
     }
 
-    // DELETE - Supprimer une analyse
+    // Supprimer une analyse
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> supprimer(@PathVariable Integer id) {
-        boolean isDeleted = this.analyseService.supprimer(id);
-        if (isDeleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public void supprimer(@PathVariable Integer id) {
+        analyseService.supprimer(id);
     }
 
-    // SEARCH - Rechercher CV par mots-clés (trié par score_global DESC)
+    // Rechercher par mots-clés
     @GetMapping("/search")
-    public ResponseEntity<List<Analyse>> rechercherParMotsCles(@RequestParam List<String> keywords) {
-        if (keywords == null || keywords.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        List<Analyse> analyses = this.analyseService.rechercherParMotsCles(keywords);
-        return new ResponseEntity<>(analyses, HttpStatus.OK);
+    public List<Analyse> rechercherParMotsCles(@RequestParam List<String> keywords) {
+        return analyseService.rechercherParMotsCles(keywords);
     }
 
-    // SEARCH - Rechercher et retourner directement les CVs (optimisé, trié par score)
+    // Rechercher CVs par mots-clés
     @GetMapping("/search/cvs")
-    public ResponseEntity<List<CV>> rechercherCvsParMotsCles(@RequestParam List<String> keywords) {
-        if (keywords == null || keywords.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        List<CV> cvs = this.analyseService.rechercherCvsParMotsCles(keywords);
-        return new ResponseEntity<>(cvs, HttpStatus.OK);
+    public List<CV> rechercherCvsParMotsCles(@RequestParam List<String> keywords) {
+        return analyseService.rechercherCvsParMotsCles(keywords);
     }
 }

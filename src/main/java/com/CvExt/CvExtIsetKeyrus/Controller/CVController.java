@@ -2,8 +2,7 @@ package com.CvExt.CvExtIsetKeyrus.Controller;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,59 +20,43 @@ import com.CvExt.CvExtIsetKeyrus.entities.CV;
 @RequestMapping("/cv")
 public class CVController {
 
-    private final CVService cvService;
+    @Autowired
+    private CVService cvService;
 
-    public CVController(CVService cvService) {
-        this.cvService = cvService;
-    }
-
+    // Créer un CV
     @PostMapping
-    public ResponseEntity<CV> creer(@RequestBody CV cv) {
-        CV cvCreated = this.cvService.creer(cv);
-        return new ResponseEntity<>(cvCreated, HttpStatus.CREATED);
+    public CV creer(@RequestBody CV cv) {
+        return cvService.creer(cv);
     }
 
+    // Récupérer tous les CVs
     @GetMapping
-    public ResponseEntity<List<CV>> rechercher() {
-        List<CV> cvs = this.cvService.rechercher();
-        return new ResponseEntity<>(cvs, HttpStatus.OK);
+    public List<CV> rechercher() {
+        return cvService.rechercher();
     }
 
+    // Récupérer un CV par ID
     @GetMapping("/{id}")
-    public ResponseEntity<CV> lire(@PathVariable Integer id) {
-        CV cv = this.cvService.lire(id);
-        if (cv != null) {
-            return new ResponseEntity<>(cv, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public CV lire(@PathVariable Integer id) {
+        return cvService.lire(id);
     }
 
+    // Modifier un CV
     @PutMapping("/{id}")
-    public ResponseEntity<CV> mettre_a_jour(@PathVariable Integer id, @RequestBody CV cv) {
+    public CV modifier(@PathVariable Integer id, @RequestBody CV cv) {
         cv.setIdCv(id);
-        CV cvUpdated = this.cvService.mettre_a_jour(cv);
-        if (cvUpdated != null) {
-            return new ResponseEntity<>(cvUpdated, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return cvService.mettre_a_jour(cv);
     }
 
+    // Supprimer un CV
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> supprimer(@PathVariable Integer id) {
-        boolean isDeleted = this.cvService.supprimer(id);
-        if (isDeleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public void supprimer(@PathVariable Integer id) {
+        cvService.supprimer(id);
     }
 
-    // GET - Récupérer plusieurs CVs par liste d'IDs
+    // Récupérer plusieurs CVs par liste d'IDs
     @GetMapping("/batch")
-    public ResponseEntity<List<CV>> rechercherParIds(@RequestParam List<Integer> ids) {
-        if (ids == null || ids.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        List<CV> cvs = this.cvService.rechercherParIds(ids);
-        return new ResponseEntity<>(cvs, HttpStatus.OK);
+    public List<CV> rechercherParIds(@RequestParam List<Integer> ids) {
+        return cvService.rechercherParIds(ids);
     }
 }
